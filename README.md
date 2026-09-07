@@ -62,6 +62,27 @@ cd ros2-tactile-sensing
 
 # Build the workspace
 colcon build
+```
+### Project Structure
+
+ros2_phd_ws/
+├── src/
+│   ├── tactile_interfaces/           # Custom message definitions
+│   │   ├── msg/
+│   │   │   ├── TactileArray.msg
+│   │   │   └── SlipEvent.msg
+│   │   ├── CMakeLists.txt
+│   │   └── package.xml
+│   └── tactile_nodes/                # C++ ROS2 nodes
+│       ├── src/
+│       │   ├── tactile_sensor_driver.cpp
+│       │   └── slip_detector.cpp
+│       ├── CMakeLists.txt
+│       └── package.xml
+├── .gitignore
+└── README.md
+
+
 
 # Source the workspace
 source install/setup.bash
