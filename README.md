@@ -62,6 +62,8 @@ cd ros2-tactile-sensing
 
 # Build the workspace
 colcon build
+# Source the workspace
+source install/setup.bash
 ```
 ### Author 
 Sarvenaz Ashoori
@@ -70,5 +72,4 @@ Italian Institute of Technology (IIT)
 
 
 
-# Source the workspace
-source install/setup.bash
+
