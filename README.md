@@ -112,16 +112,6 @@ fingertip_fk_node: A C++ node utilizing the tf2_ros API to perform non-blocking 
 
 ### Build
 ```bash
-# Clone the repository
-git clone https://github.com/sarvenazrobotics/ros2-tactile-sensing.git
-cd ros2-tactile-sensing
-
-# Build the workspace
-colcon build
-# Source the workspace
-source install/setup.bash
-
-
 # 1. Install Git LFS (required for 3D meshes)
 sudo apt update && sudo apt install git-lfs
 git lfs install
