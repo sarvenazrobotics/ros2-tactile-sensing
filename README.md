@@ -120,6 +120,25 @@ cd ros2-tactile-sensing
 colcon build
 # Source the workspace
 source install/setup.bash
+
+
+# 1. Install Git LFS (required for 3D meshes)
+sudo apt update && sudo apt install git-lfs
+git lfs install
+
+# 2. Clone the repository
+git clone https://github.com/sarvenazrobotics/ros2-tactile-sensing.git
+cd ros2-tactile-sensing
+
+# 3. Pull real 3D mesh files (resolves Git LFS placeholders)
+cd src/LEAP_Hand_Sim && git lfs pull && cd ../..
+
+# 4. Build the workspace
+colcon build
+
+# 5. Source the environment
+source install/setup.bash
+
 ```
 ### Author 
 Sarvenaz Ashoori
