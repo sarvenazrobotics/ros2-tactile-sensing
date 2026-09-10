@@ -1,0 +1,34 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    index_finger_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+index_finger_controller:
+  ros__parameters:
+    joints:
+      - index_mcp
+      - index_pip
+      - index_dip
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    gains:
+      index_mcp:
+        p: 100.0
+        i: 0.0
+        d: 1.0
+      index_pip:
+        p: 100.0
+        i: 0.0
+        d: 1.0
+      index_dip:
+        p: 100.0
+        i: 0.0
+        d: 1.0

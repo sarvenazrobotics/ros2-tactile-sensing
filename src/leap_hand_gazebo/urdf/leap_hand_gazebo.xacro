@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="leap_hand_gazebo">
+
+  <!-- Include the original LEAP Hand URDF -->
+  <xacro:include filename="$(find leap_hand_description)/urdf/robot.urdf"/>
+
+  <!-- ============ GAZEBO HARMONIC ROS2 CONTROL PLUGIN ============ -->
+  <gazebo>
+    <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(find leap_hand_gazebo)/config/leap_hand_controllers.yaml</parameters>
+      <controller_manager_name>controller_manager</controller_manager_name>
+    </plugin>
+  </gazebo>
+
+  <!-- ============ MODERN ROS2 CONTROL CONFIGURATION (Jazzy) ============ -->
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    
+    <joint name="index_mcp">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="index_pip">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="index_dip">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <!-- ============ GAZEBO MATERIAL PROPERTIES (Friction for grasping) ============ -->
+  <gazebo reference="palm_lower">
+    <mu1>0.9</mu1><mu2>0.9</mu2><kp>1000000.0</kp><kd>100.0</kd>
+  </gazebo>
+  <gazebo reference="index_proximal">
+    <mu1>0.8</mu1><mu2>0.8</mu2><kp>1000000.0</kp><kd>100.0</kd>
+  </gazebo>
+  <gazebo reference="index_distal">
+    <mu1>0.8</mu1><mu2>0.8</mu2><kp>1000000.0</kp><kd>100.0</kd>
+  </gazebo>
+
+</robot>
