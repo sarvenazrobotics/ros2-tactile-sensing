@@ -15,6 +15,11 @@ This project implements a complete real-time tactile perception pipeline for rob
 
 The pipeline demonstrates core competencies in **real-time C++ execution**, **ROS2 middleware tuning**, **custom message design**, and **sensor-data integration** — directly addressing the perception and control requirements of modern human-robot interaction research.
 
+This workspace bridges the gap between physical perception and kinematic modeling. It is designed as a foundational software stack for prosthetic hands and dexterous manipulators, featuring:
+1. **Real-Time Perception**: A 1000 Hz C++ tactile sensor driver with optimized QoS and real-time slip detection via signal derivative calculation.
+2. **Virtual Prototyping**: Parametric URDF/Xacro modeling of complex robotic hands (e.g., 16-DOF LEAP Hand), resolving Git LFS mesh dependencies for accurate 3D visualization.
+3. **Real-Time Kinematics**: A custom C++ `tf2` node that asynchronously queries the TF tre
+
 ---
 
 
