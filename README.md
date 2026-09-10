@@ -83,13 +83,13 @@ Two C++ ROS2 nodes:
 2. **`slip_detector`**: Subscribes to tactile data, computes real-time force derivatives ($dF/dt$), and publishes slip events when the derivative exceeds 1000 N/s.
 
 ### `leap_hand_description`
-3. leap_hand_description
+3. **`leap_hand_description`**:
 Virtual prototyping assets for the 16-DOF LEAP Hand:
 Resolved Git LFS .stl mesh files for accurate 3D visualization.
 Clean URDF structure with proper <inertial>, <collision>, and <visual> tags.
 
 ### `prosthetic_hand_kinematic`
-4. prosthetic_hand_kinematics
+4. **`prosthetic_hand_kinematics`**:
 Real-time Forward Kinematics solver:
 fingertip_fk_node: A C++ node utilizing the tf2_ros API to perform non-blocking 100 Hz lookups from palm_lower to fingertip, publishing the resulting geometry_msgs/PoseStamped.
 
