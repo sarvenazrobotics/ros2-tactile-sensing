@@ -22,6 +22,30 @@ This workspace bridges the gap between physical perception and kinematic modelin
 
 ---
 
+##  System Architecture
+
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        PERCEPTION PIPELINE (Project 1)                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│  TactileSensorDriver (1000 Hz) ──[best_effort QoS]──> SlipDetector     │
+│  • 100-taxel array simulation                         • Real-time dF/dt │
+│  • Simulated slip events (50N spikes)                 • Event publishing│
+└─────────────────────────────────────────────────────────────────────────┘
+                                  │
+                                  ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                   KINEMATIC & VIRTUAL PROTOTYPING (Project 2)           │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Joint State Publisher ──> robot_state_publisher ──> TF2 Tree           │
+│  (GUI / Hardware)          (Loads URDF/Xacro)        (palm → fingertip) │
+│                                                            │            │
+│                                                            ▼            │
+│                                              FingertipFKNode (100 Hz)   │
+│                                              • tf2_ros::Buffer lookup   │
+│                                              • Publishes /fingertip_pose│
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
 
 
