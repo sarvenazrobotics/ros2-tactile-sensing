@@ -139,16 +139,27 @@ To visualize the 16-DOF hand and watch real-time Forward Kinematics in action, o
 ```bash
 source install/setup.bash
 ros2 run robot_state_publisher robot_state_publisher src/leap_hand_description/urdf/robot.urdf
-
+```
+**2. Simulate Joint Hardware (GUI):**
+```bash
 source install/setup.bash
 ros2 run joint_state_publisher_gui joint_state_publisher_gui
+```
 
+**3. Run the C++ Forward Kinematics Solver:**
+```bash
 source install/setup.bash
 ros2 run prosthetic_hand_kinematics fingertip_fk_node
+```
 
+**4. Monitor the Real-Time Cartesian Pose:**
+```bash
 source install/setup.bash
 ros2 topic echo /fingertip_pose
+```
 
+**5. Visualize in RViz:**
+```bash
 source install/setup.bash
 rviz2
 ```
