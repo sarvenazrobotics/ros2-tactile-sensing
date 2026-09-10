@@ -15,7 +15,45 @@ This project implements a complete real-time tactile perception pipeline for rob
 
 The pipeline demonstrates core competencies in **real-time C++ execution**, **ROS2 middleware tuning**, **custom message design**, and **sensor-data integration** — directly addressing the perception and control requirements of modern human-robot interaction research.
 
+This workspace bridges the gap between physical perception and kinematic modeling. It is designed as a foundational software stack for prosthetic hands and dexterous manipulators, featuring:
+1. **Real-Time Perception**: A 1000 Hz C++ tactile sensor driver with optimized QoS and real-time slip detection via signal derivative calculation.
+2. **Virtual Prototyping**: Parametric URDF/Xacro modeling of complex robotic hands (e.g., 16-DOF LEAP Hand), resolving Git LFS mesh dependencies for accurate 3D visualization.
+3. **Real-Time Kinematics**: A custom C++ `tf2` node that asynchronously queries the TF tre
+
 ---
+
+##  System Architecture
+
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        PERCEPTION PIPELINE (Project 1)                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│  TactileSensorDriver (1000 Hz) ──[best_effort QoS]──> SlipDetector     │
+│  • 100-taxel array simulation                         • Real-time dF/dt │
+│  • Simulated slip events (50N spikes)                 • Event publishing│
+└─────────────────────────────────────────────────────────────────────────┘
+                                  │
+                                  ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                   KINEMATIC & VIRTUAL PROTOTYPING (Project 2)           │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Joint State Publisher ──> robot_state_publisher ──> TF2 Tree           │
+│  (GUI / Hardware)          (Loads URDF/Xacro)        (palm → fingertip) │
+│                                                            │            │
+│                                                            ▼            │
+│                                              FingertipFKNode (100 Hz)   │
+│                                              • tf2_ros::Buffer lookup   │
+│                                              • Publishes /fingertip_pose│
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+
+
+https://github.com/user-attachments/assets/4e9dd3d3-ccc1-4e04-ab7c-f703124c5a1d
+
+
+
+
 
 
 ---
@@ -44,7 +82,25 @@ Two C++ ROS2 nodes:
 1. **`tactile_sensor_driver`**: Simulates a 100-taxel tactile sensor publishing at 1000 Hz with `best_effort` QoS. Injects periodic 50N force spikes every 3 seconds to simulate object slip.
 2. **`slip_detector`**: Subscribes to tactile data, computes real-time force derivatives ($dF/dt$), and publishes slip events when the derivative exceeds 1000 N/s.
 
+### `leap_hand_description`
+3. **`leap_hand_description`**:
+Virtual prototyping assets for the 16-DOF LEAP Hand:
+Resolved Git LFS .stl mesh files for accurate 3D visualization.
+Clean URDF structure with proper <inertial>, <collision>, and <visual> tags.
+
+### `prosthetic_hand_kinematic`
+4. **`prosthetic_hand_kinematics`**:
+Real-time Forward Kinematics solver:
+fingertip_fk_node: A C++ node utilizing the tf2_ros API to perform non-blocking 100 Hz lookups from palm_lower to fingertip, publishing the resulting geometry_msgs/PoseStamped.
+
 ---
+
+
+
+
+
+
+
 
 ## Installation & Build
 
@@ -56,19 +112,61 @@ Two C++ ROS2 nodes:
 
 ### Build
 ```bash
-# Clone the repository
+# 1. Install Git LFS (required for 3D meshes)
+sudo apt update && sudo apt install git-lfs
+git lfs install
+
+# 2. Clone the repository
 git clone https://github.com/sarvenazrobotics/ros2-tactile-sensing.git
 cd ros2-tactile-sensing
 
-# Build the workspace
+# 3. Pull real 3D mesh files (resolves Git LFS placeholders)
+cd src/LEAP_Hand_Sim && git lfs pull && cd ../..
+
+# 4. Build the workspace
 colcon build
-# Source the workspace
+
+# 5. Source the environment
 source install/setup.bash
+
+```
+
+##  Usage: Virtual Prototyping & FK Demo
+
+To visualize the 16-DOF hand and watch real-time Forward Kinematics in action, open **four separate terminals** from your workspace root (`~/ros2_phd_ws`):
+
+**1. Load the Robot Model & TF Tree:**
+```bash
+source install/setup.bash
+ros2 run robot_state_publisher robot_state_publisher src/leap_hand_description/urdf/robot.urdf
+```
+**2. Simulate Joint Hardware (GUI):**
+```bash
+source install/setup.bash
+ros2 run joint_state_publisher_gui joint_state_publisher_gui
+```
+
+**3. Run the C++ Forward Kinematics Solver:**
+```bash
+source install/setup.bash
+ros2 run prosthetic_hand_kinematics fingertip_fk_node
+```
+
+**4. Monitor the Real-Time Cartesian Pose:**
+```bash
+source install/setup.bash
+ros2 topic echo /fingertip_pose
+```
+
+**5. Visualize in RViz:**
+```bash
+source install/setup.bash
+rviz2
 ```
 ### Author 
 Sarvenaz Ashoori
 Italian Institute of Technology (IIT)
-📧 sarvenaz.ashoori@iit.it
+sarvenaz.ashoori@iit.it
 
 
 
