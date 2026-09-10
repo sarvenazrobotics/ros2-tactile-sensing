@@ -130,10 +130,32 @@ colcon build
 source install/setup.bash
 
 ```
+
+##  Usage: Virtual Prototyping & FK Demo
+
+To visualize the 16-DOF hand and watch real-time Forward Kinematics in action, open **four separate terminals** from your workspace root (`~/ros2_phd_ws`):
+
+**1. Load the Robot Model & TF Tree:**
+```bash
+source install/setup.bash
+ros2 run robot_state_publisher robot_state_publisher src/leap_hand_description/urdf/robot.urdf
+
+source install/setup.bash
+ros2 run joint_state_publisher_gui joint_state_publisher_gui
+
+source install/setup.bash
+ros2 run prosthetic_hand_kinematics fingertip_fk_node
+
+source install/setup.bash
+ros2 topic echo /fingertip_pose
+
+source install/setup.bash
+rviz2
+```
 ### Author 
 Sarvenaz Ashoori
 Italian Institute of Technology (IIT)
-📧 sarvenaz.ashoori@iit.it
+sarvenaz.ashoori@iit.it
 
 
 
